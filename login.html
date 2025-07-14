@@ -1,1 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Login - Prado Bolsas</title>
+<style>
 
+    body { font-family: Arial; background: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; }
+
+    .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 300px; }
+
+    h2 { text-align: center; }
+
+    input { width: 100%; padding: 10px; margin: 10px 0; }
+
+    button { width: 100%; padding: 10px; background: #333; color: white; border: none; }
+
+    p { text-align: center; }
+
+    a { color: blue; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Prado Bolsas - Login</h2>
+<input type="email" id="email" placeholder="Email" required />
+<input type="password" id="senha" placeholder="Senha" required />
+<button onclick="login()">Entrar</button>
+<p>Não tem conta? <a onclick="mostrarCadastro()">Cadastrar</a></p>
+</div>
+<div class="container" id="cadastro" style="display:none;">
+<h2>Cadastro</h2>
+<input type="text" id="nomeCadastro" placeholder="Nome completo" required />
+<input type="email" id="emailCadastro" placeholder="Email" required />
+<input type="password" id="senhaCadastro" placeholder="Senha" required />
+<button onclick="cadastrar()">Cadastrar</button>
+<p>Já tem conta? <a onclick="mostrarLogin()">Entrar</a></p>
+</div>
+<script>
+
+    function mostrarCadastro() {
+
+      document.querySelector('.container').style.display = 'none';
+
+      document.getElementById('cadastro').style.display = 'block';
+
+    }
+
+    function mostrarLogin() {
+
+      document.querySelector('.container').style.display = 'block';
+
+      document.getElementById('cadastro').style.display = 'none';
+
+    }
+
+    function cadastrar() {
+
+      const nome = document.getElementById('nomeCadastro').value;
+
+      const email = document.getElementById('emailCadastro').value;
+
+      const senha = document.getElementById('senhaCadastro').value;
+
+      const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+      const existe = usuarios.find(u => u.email === email);
+
+      if (existe) {
+
+        alert('Usuário já cadastrado!');
+
+      } else {
+
+        usuarios.push({ nome, email, senha });
+
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+        alert('Cadastro realizado! Faça login.');
+
+        mostrarLogin();
+
+      }
+
+    }
+
+    function login() {
+
+      const email = document.getElementById('email').value;
+
+      const senha = document.getElementById('senha').value;
+
+      const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+      const usuario = usuarios.find(u => u.email === email && u.senha === senha);
+
+      if (usuario) {
+
+        localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
+
+        window.location.href = 'painel.html';
+
+      } else {
+
+        alert('Usuário ou senha inválidos!');
+
+      }
+
+    }
+</script>
+</body>
+</html>
+ 
